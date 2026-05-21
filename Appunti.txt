@@ -1,0 +1,42 @@
+Punto 1:
+a) Dropdown da riempire:
+   Step 1: Scrivere la query nel DAO per recuperare le info
+           @staticmethod
+            def getAllYears():
+                conn = DBConnect.get_connection()
+
+                result = []
+
+                cursor = conn.cursor(dictionary=True)
+                query = """SELECT DISTINCT t.`year`
+                            from teams t
+                            where t.`year` >= 1980 """
+
+                cursor.execute(query)
+
+                for row in cursor:
+                    result.append(row["year"]) #Non serve oggetto
+
+                cursor.close()
+                conn.close()
+                return result
+   Step 2: Richiamare metodo nel Model
+            def getAllYears(self):
+                return DAO.getAllYears()
+   Step 3:     def _fillDDYears(self):
+                    years = self._model.getAllYears()
+
+                    #Metodo 1
+                    for y in years:
+                        self._view._ddAnno.options.append(
+                            ft.dropdown.Option(y)
+                        )
+
+                    # Metodo 2 con list map
+                    # yearsDD = list(map(lambda x: ft.dropdown.Option(x), years))
+                    # self._view._ddAnno.options = yearsDD
+
+                    self._view.update_page()
+   Step 4: potrebbe servire modificare la view
+            self._ddAnno = ft.Dropdown(label="Anno", width=200, alignment=ft.alignment.top_left)
+            self._controller._fillDDYears()
