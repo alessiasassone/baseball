@@ -40,3 +40,40 @@ a) Dropdown da riempire:
    Step 4: potrebbe servire modificare la view
             self._ddAnno = ft.Dropdown(label="Anno", width=200, alignment=ft.alignment.top_left)
             self._controller._fillDDYears()
+b) Creare il grafo:
+    Nel model:
+    def creaGrafo(self):
+    self._grafo.clear()
+    self._grafo.add_nodes_from(self._teams)
+
+    # Per gli archi non scrivo una query perchè tanto mi serve un arco per ogni coppia,
+    # il doppio for non è ideale
+    # for u in self._grafo.nodes:
+    #     for v in self._grafo.nodes:
+    #         if u != v:
+    #             self._grafo.add_edge(u, v)
+
+    myedges = itertools.combinations(self._teams, 2) # mi prendo i team a due a due
+    # Add edges from è un metodo che accetta solo tuple
+    self._grafo.add_edges_from(myedges)
+
+    Conviene creare un testModel a livello del main per testare:
+    mymodel = Model()
+
+    mymodel.getTeamsOfYear(2012)
+    mymodel.creaGrafo()
+    nodi, archi = mymodel.getGraphDetails()
+    print(f"Grafo creato! Il grafo ha: {nodi} nodi e {archi} archi.")
+
+    def getGraphDetails(self):
+        return len(self._grafo.nodes), len(self._grafo.edges)
+
+    Nel controller:
+        def handleCreaGrafo(self, e):
+        self._model.creaGrafo()
+        n, m = self._model.getGraphDetails()
+        self._view._txt_result.controls.clear()
+        self._view._txt_result.controls.append(
+            ft.Text(f"Grafo correttamente creato! Il grafo è costituito di {n} nodi e {m} archi")
+        )
+        self._view.update_page()
