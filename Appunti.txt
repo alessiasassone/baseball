@@ -23,7 +23,8 @@ a) Dropdown da riempire:
    Step 2: Richiamare metodo nel Model
             def getAllYears(self):
                 return DAO.getAllYears()
-   Step 3:     def _fillDDYears(self):
+   Step 3: Nel controller
+                def _fillDDYears(self):
                     years = self._model.getAllYears()
 
                     #Metodo 1

@@ -1,0 +1,31 @@
+Appunti SQL:
+    SELECT = elenco attributi da visualizzare
+    DISTINCT = per eliminare duplicati (parole chiave: diversi)
+    Selezione con espressione: crei una colonna temporanea, ... as peso
+    NB: - trovare qualcosa il cui nome inizia con C, in WHERE scrivere Nome LIKE 'C%'
+        - contiene stringa: %stringa%
+    ORDER BY nome ASC/DESC
+    NB gli attributi di ordinamento devono comparire nel select
+
+    NB trovare le coppie di attori bisogna scrivere due volte la tabella attore con nome diverso
+        ma nel WHERE bisogna ricordarsi di mettere < per togliere permutazioni della stessa coppia (A1 -> A2 = A2 -> A1)
+        e <> toglie solo le coppie ma non le permutazioni
+
+    FUNZIONI AGGREGATE: COUNT, SUM, ACG, MAX e MIN, vengono applicate solo dopo i predicati in WHERE
+        - COUNT: dopo che ho fatto SELECT, conto le righe della tabella risultante
+
+    GROUP BY: clausola di raggruppamento, l'ordine è ininfluente,
+        TUTTO CIò CHE METTO NEL SELECT VA NEL GROUP BY, puoi avere nel group by attributi che non compaiono nel select!!!
+
+    HAVING: condizioni di selezione sui gruppi, permette di specificare condizioni solo su funzioni aggregate
+
+    QUERY NIDIFICATA: un'interrogazione nidificata è un'istruzione SELECT contenuta all'interno di un'altra interrogazione
+        IN: esprime il concetto di appartenenza ad un insieme di valori, con il join:
+         - clausola FROM contenente le tabelle referenziate nelle FROM di tutte le SELECT
+         - opportune condizioni di join nella clausola WHERE
+         - eventuali predicati di selezione aggiunti nella clausola WHERE
+        NOT IN: esprime il concetto di esclusione da un insieme di valori
+
+    NB COAELESCE: restituisce il primo valore NOT NULL e lo eguaglia a 0 -> es: COAELESCE(bonus, 0) AS bonus
+    NB CAST: per convertire stringhe in numeri, non vengono accettati simboli $ (diventa vuoto) e ,
+        es: SUM(COALESCE(CAST(REPLACE(REPLACE(m.worlwide_gross_income, '$', ''),',', '') AS UNSIGNED), 0)) as peso
